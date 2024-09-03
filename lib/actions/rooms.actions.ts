@@ -10,14 +10,14 @@ export const createDocument = async ({ userId, email }: CreateDocumentParams) =>
   const roomId = nanoid();
 
   try {
-    const metadata = {
-      creatorId: userId,
-      email,
+    const metadata: RoomMetadata = {
+      creatorId: userId as string,
+      email: email as string,
       title: 'Untitled'
     }
 
     const usersAccesses: RoomAccesses = {
-      [email]: ['room:write']
+      [email as string]: ['room:write']
     }
 
     const room = await liveblocks.createRoom(roomId, {

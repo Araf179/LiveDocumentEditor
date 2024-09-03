@@ -17,8 +17,8 @@ declare type SearchParamProps = {
   };
   
   declare type CreateDocumentParams = {
-    userId: string;
-    email: string;
+    userId: string | undefined;
+    email: string | undefined;
   };
   
   declare type User = {
@@ -71,8 +71,8 @@ declare type SearchParamProps = {
   };
   
   declare type AddDocumentBtnProps = {
-    userId: string;
-    email: string;
+    userId: string | undefined;
+    email: string | undefined;
   };
   
   declare type DeleteModalProps = { roomId: string };
