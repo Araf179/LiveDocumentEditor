@@ -5,10 +5,13 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import React from 'react';
 import { currentUser } from "@clerk/nextjs/server";
 import AddDocumentbtn from "@/components/ui/addDocumentbtn";
+import { getDocuments } from "@/lib/actions/rooms.actions";
+import Link from "next/link";
+import { dateConverter } from "@/lib/utils";
 
 const Home = async () => {
   const clerkUser = await currentUser();
-  const documents = [];
+  const documents = await getDocuments(clerkUser!.emailAddresses[0].emailAddress);
   return (
     <main className="home-container">
       <Header className="sticky left-0 top-0">
@@ -19,9 +22,35 @@ const Home = async () => {
           </SignedIn>
         </div>
       </Header>
-      {documents.length > 0 ? (
-        <div>
-
+      {documents.data.length > 0 ? (
+        <div className="document-list-container">
+        <div className="document-list-title">
+          <h3 className="text-28-semibold">All documents</h3>
+          <AddDocumentbtn 
+            userId={clerkUser!.id}
+            email={clerkUser!.emailAddresses[0].emailAddress}
+          />
+        </div>
+        <ul className="document-ul">
+          {documents.data.map(({ id, metadata, createdAt }: any) => (
+            <li key={id} className="document-list-item">
+              <Link href={`/documents/${id}`} className="flex flex-1 items-center gap-4">
+                <div className="hidden rounded-md bg-dark-500 p-2 sm:block">
+                  <Image 
+                    src="/assets/icons/doc.svg"
+                    alt="file"
+                    width={40}
+                    height={40}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <p className="line-clamp-1 text-lg">{metadata.title}</p>
+                  <p className="text-sm font-light text-blue-100">Created about {dateConverter(createdAt)}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
         </div>
       ) : (
         <div className="document-list-empty">

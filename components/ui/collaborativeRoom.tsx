@@ -11,8 +11,7 @@ import { updateDocument } from '@/lib/actions/rooms.actions';
 import Image from 'next/image';
 
 
-function collaborativeRoom({ roomId, roomMetadata}: CollaborativeRoomProps) {
-  const currentUserType = "editor";
+function collaborativeRoom({ roomId, roomMetadata, users, currentUserType}: CollaborativeRoomProps) {
 
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -108,7 +107,7 @@ function collaborativeRoom({ roomId, roomMetadata}: CollaborativeRoomProps) {
             </SignedIn>
             </div>
         </Header>
-        <Editor />
+        <Editor roomId={roomId} currentUserType={currentUserType}/>
       </div>
     </ClientSideSuspense>
   </RoomProvider>
