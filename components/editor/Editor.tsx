@@ -13,9 +13,11 @@ import React from 'react';
 
 import { FloatingComposer, FloatingThreads, liveblocksConfig, LiveblocksPlugin, useEditorStatus } from '@liveblocks/react-lexical'
 
+import FloatingToolbar from './plugins/floatingToolbarPlugin';
 import { useThreads } from '@liveblocks/react/suspense';
+import Comments from '../ui/comments';
+import { DeleteModal } from '../ui/deletemodal';
 import Loader from '../ui/loader';
-
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -45,6 +47,7 @@ export function Editor({ roomId, currentUserType }: { roomId: string, currentUse
       <div className="editor-container size-full">
         <div className="toolbar-wrapper flex min-w-full justify-between">
           <ToolbarPlugin />
+          {currentUserType === 'editor' && <DeleteModal roomId={roomId} />}
         </div>
 
         <div className="editor-wrapper flex flex-col items-center justify-start">
@@ -57,6 +60,7 @@ export function Editor({ roomId, currentUserType }: { roomId: string, currentUse
                 placeholder={<Placeholder />}
                 ErrorBoundary={LexicalErrorBoundary}
               />
+              {currentUserType === 'editor' && <FloatingToolbar />}
               <HistoryPlugin />
               <AutoFocusPlugin />
             </div>
@@ -65,6 +69,7 @@ export function Editor({ roomId, currentUserType }: { roomId: string, currentUse
           <LiveblocksPlugin>
             <FloatingComposer className="w-[350px]" />
             <FloatingThreads threads={threads} />
+            <Comments />
           </LiveblocksPlugin>
         </div>
       </div>
