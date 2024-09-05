@@ -23,7 +23,7 @@ async function Document({params: { id }}: SearchParamProps) {
   
   const usersData = users.map((user: User) => ({
     ...user,
-    userType: room.usersAccesses[user.email]?.includes("room:write") 
+    userType: room.usersAccesses[user?.email]?.includes("room:write") 
     ? "editor"
     : "viewer"
   }))
