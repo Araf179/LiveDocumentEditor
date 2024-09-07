@@ -8,9 +8,13 @@ import AddDocumentbtn from "@/components/ui/addDocumentbtn";
 import { getDocuments } from "@/lib/actions/rooms.actions";
 import Link from "next/link";
 import { dateConverter } from "@/lib/utils";
+import { DeleteModal } from "@/components/ui/deletemodal";
+import { redirect } from "next/navigation";
 
 const Home = async () => {
   const clerkUser = await currentUser();
+  if(!clerkUser) redirect('/sign-in');
+  
   const documents = await getDocuments(clerkUser!.emailAddresses[0].emailAddress);
   return (
     <main className="home-container">
@@ -48,6 +52,9 @@ const Home = async () => {
                   <p className="text-sm font-light text-blue-100">Created about {dateConverter(createdAt)}</p>
                 </div>
               </Link>
+              <ul>
+                <DeleteModal roomId={id}/>
+              </ul>
             </li>
           ))}
         </ul>
